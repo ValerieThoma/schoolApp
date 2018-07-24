@@ -1,18 +1,10 @@
 # eduCrate
 ![logo](images/eduCrateblocks.png)
 
-## Overview:
 __eduCrate__, a learning management system, offers a streamlined infrastructure advantageous for the blended learning environments of grade-school aged students. The software provides educators an authoring tool in which to deliver assignments, document the progress of students, record correspondence with parents, and otherwise manage and administer all other miscellaneous instructional content directly to the parents and students.
 
-
-## Github Link:
-[eduCrate GitHub](https://github.com/eddieatkinson/schoolApp)
-
-## Team Members & Roles:
-* [Eddie Atkinson](https://github.com/eddieatkinson)
-**Charming Genius|console.logger|Tolerates Giraffes|can now officially say he's a React Developer**
-* [Valerie Jane Thoma](https://github.com/ValerieThoma)
-**Charming ~~Genius~~|Likes Giraffes|Lives for Hugs|can now officially say she's a React Developer**
+## URL:
+[eduCrate](http://schoolapp.eddiebatkinson.com)
 
 ## Features:
 **Registration and Log In**
@@ -88,10 +80,6 @@ Calendar:
 Compose Message:
 ![Inbox](images/inbox.png)
 
-
-
-## URL:
-[eduCrate](http://schoolapp.eddiebatkinson.com)
 
 ## Code snippets:
 Dashboard Navbar inbox icon indicates how many unread messages a user has. This number decrements when read. 
@@ -251,6 +239,12 @@ changeGrade(event, aid, sid, index){
 
 
 ```
+
+## Team Members & Roles:
+* [Eddie Atkinson](https://github.com/eddieatkinson)
+**Charming Genius|console.logger|Tolerates Giraffes|can now officially say he's a React Developer**
+* [Valerie Jane Thoma](https://github.com/ValerieThoma)
+**Charming ~~Genius~~|Likes Giraffes|Lives for Hugs|can now officially say she's a React Developer**
 
 ## Acknowledgments:
 * Special thank you Robert Bunch, our Ambassador of Quan. 

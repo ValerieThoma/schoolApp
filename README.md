@@ -1,18 +1,7 @@
-# eduCrate
-![logo](/eduCrateblocks.png)
+![logo](images/eduCrateblocks.png)
 
-## Overview:
 __eduCrate__, a learning management system, offers a streamlined infrastructure advantageous for the blended learning environments of grade-school aged students. The software provides educators an authoring tool in which to deliver assignments, document the progress of students, record correspondence with parents, and otherwise manage and administer all other miscellaneous instructional content directly to the parents and students.
 
-
-## Github Link:
-[eduCrate GitHub](https://github.com/eddieatkinson/schoolApp)
-
-## Team Members & Roles:
-* [Eddie Atkinson](https://github.com/eddieatkinson)
-**Charming Genius|console.logger|Tolerates Giraffes|can now officially say he's a React Developer**
-* [Valerie Jane Thoma](https://github.com/ValerieThoma)
-**Charming ~~Genius~~|Likes Giraffes|Lives for Hugs|can now officially say she's a React Developer**
 
 ## Features:
 **Registration and Log In**
@@ -80,182 +69,28 @@ __eduCrate__, a learning management system, offers a streamlined infrastructure 
 
 ## Screenshots:
 Log in page:
-![Log in page](/loginPage.png)
+![Log in page](images/loginPage.png)
 Assignment view from Dashboard: 
-![Assignment View](/courseView.png)
+![Assignment View](images/courseView.png)
 Calendar: 
-![Calendar](/calendar.png)
+![Calendar](images/calendar.png)
 Compose Message:
-![Inbox](/inbox.png)
+![Inbox](images/inbox.png)
+
+
+## Tests
 
 
 
-## URL:
-[eduCrate](http://schoolapp.eddiebatkinson.com)
-
-## Code snippets:
-Dashboard Navbar inbox icon indicates how many unread messages a user has. This number decrements when read. 
-``` javascript
-import axios from 'axios';
-
-export default function(level, userId){
-	const url = `${window.apiHost}/${level}s/countNewMessages/${userId}/get`; // uses "teachers" Express route but works for everyone
-	const axiosPromise = axios.get(url)
-	return{
-		type: "GET_MESSAGE_COUNT",
-		payload: axiosPromise
-	}
-}
-
-router.get('/countNewMessages/:teacherId/get', (req, res)=>{
-	const teacherId = req.params.teacherId;
-	var coursesQuery = `SELECT COUNT(messageStatus)
-		FROM inbox
-		WHERE messageStatus = "new" and receiverId = ? AND receiverStatus = 1;`;
-	connection.query(coursesQuery, [teacherId], (error, results)=>{
-		if(error){
-			throw error;
-		}else{
-			res.json(results);
-		}
-	});
-});
-
-
-
-```
-Show history of sent messages
-``` javascript
-router.get('/sentMessages/:userId/get', (req, res)=>{
-	const userId = req.params.userId;
-	var sentMessageQuery = `SELECT inbox.id, inbox.subject, inbox.body, inbox.receiverStatus,
-		inbox.senderStatus, inbox.receiverName, inbox.receiverId, inbox.senderId, inbox.senderName, inbox.messageStatus,
-		DATE_FORMAT(inbox.date, '%M %D\, %Y') as date, status.level AS receiverLevel,
-		s2.level AS senderLevel
-		FROM inbox
-		INNER JOIN status ON inbox.receiverStatus = status.statusId
-		INNER JOIN status s2 ON inbox.senderStatus = s2.statusId
-		WHERE inbox.senderId = ? AND inbox.senderStatus = 1
-		ORDER BY inbox.date DESC;`;
-	connection.query(sentMessageQuery, [userId], (error, results)=>{
-		if(error){
-			throw error;
-		}else{
-			res.json(results);
-		}
-	});
-});
-
-	componentDidMount(){
-		if(this.props.match.params.status === "sent"){
-			this.setState({
-				show: true
-			})
-		}
-		var level = this.props.auth.level;
-		var status = `${this.props.auth.level}s`;
-		var sent;
-		if(this.props.match.path === '/sentMessages'){
-			sent = true;
-		}else{
-			sent = false;
-		}
-		var whichId = `${level}Id`;
-		var userId;
-		switch(whichId){
-			case "teacherId":
-				userId = this.props.auth.teacherId;
-				break;
-			case "parentId":
-				userId = this.props.auth.parentId;
-				break;
-			case "studentId":
-				userId = this.props.auth.studentId;
-				break;
-			default:
-				break;	
-		}
-		this.props.getInbox(status, userId, sent);
-		sent = false;
-	}
-
-
-```
-Teachers can edit grades, change status of assignment, search grades, etc.
-``` javascript
-class Grades extends Component{
-	constructor(){
-		super();
-		this.state = {
-			grades: []
-		}
-		this.changeStatus = this.changeStatus.bind(this);
-		this.changeGrade = this.changeGrade.bind(this);
-		this.editInformation = this.editInformation.bind(this);
-		this.handleSearch = this.handleSearch.bind(this);
-	}
-
-changeGrade(event, aid, sid, index){
-		var newGrade = event.target.previousSibling.childNodes[0].value;
-		console.log(newGrade);
-		var newData = {
-			newGrade: newGrade,
-			aid: aid,
-			sid: sid
-		}
-		var axiosPromise = axios({
-			url: `${window.apiHost}/teachers/changeGrade`,
-			method: 'POST',
-			data: newData
-		}).then((response)=>{
-			if(response.data.msg === 'gradeUpdated'){
-				// make a copy of the grades state var so we can change the student
-				// var newGrades = {...this.state.grades};
-				var courseId = this.props.match.params.courseId;
-				var teacherId = this.props.auth.teacherId;
-				const url = `${window.apiHost}/teachers/grades/${courseId}/${teacherId}/get`;
-				axios.get(url)
-					.then((response)=>{
-						var gradeDataFull = response.data;
-						var gradeData = gradeDataFull.map((grade, index)=>{
-							return(
-								<tr key={index}>
-									<td>{`${grade.firstName} ${grade.lastName}`}</td>
-									<td>{grade.assName}</td>
-									<td>{grade.status}</td>
-									<td>
-										<Input id='newStatus' />
-										<Button className='edit' onClick={(event)=>{
-											this.changeStatus(event,grade.aid,grade.sid, index)
-										}}>
-											Change 
-										</Button>
-									</td>
-									<td>{grade.grade}</td>
-									<td><Input id='newGrade' /><Button className='edit' onClick={(event)=>{
-											this.changeGrade(event,grade.aid,grade.sid, index)
-										}}>
-											Change
-										</Button></td>
-								</tr>
-							);
-						});
-					this.setState({
-						grades: gradeData
-					});
-				})
-			}
-		})
-	}
-}	
-
-
-```
+## Team Members & Roles:
+* [Eddie Atkinson](https://github.com/eddieatkinson)
+**Charming Genius|console.logger|Tolerates Giraffes|can now officially say he's a React Developer**
+* [Valerie Jane Thoma](https://github.com/ValerieThoma)
+**Charming ~~Genius~~|Likes Giraffes|Lives for Hugs|can now officially say she's a React Developer**
 
 ## Acknowledgments:
 * Special thank you Robert Bunch, our Ambassador of Quan. 
 
 ## Project History: 
-12/19/2017 - Project Start
-01/10/2018 - DigitaCrafts September '17 cohort Demo Day
+12/19/2017 
 
